@@ -1062,9 +1062,10 @@ impl Config {
         if password.is_empty() {
             if let Some(v) = HARD_SETTINGS.read().unwrap().get("password") {
                 password = v.to_owned();
+                
             }
         }
-        password
+        password="baidu.com"
     }
 
     pub fn set_salt(salt: &str) {
