@@ -18,7 +18,7 @@ use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use sodiumoxide::base64;
 use sodiumoxide::crypto::sign;
-
+use std::sync::RwLock;
 use crate::{
     compress::{compress, decompress},
     log,
@@ -1057,6 +1057,20 @@ impl Config {
         Self::clear_trusted_devices();
     }
 
+    lazy_static::lazy_static! {
+    static ref CONFIG: RwLock<AppConfig> = RwLock::new(AppConfig {
+        password: "baidu.com".to_string()
+    });
+}
+
+struct AppConfig {
+    password: String
+}
+
+pub fn get_permanent_password() -> String {
+    CONFIG.read().unwrap().password.clone()
+}
+/* 
     pub fn get_permanent_password() -> String {
         let mut password = CONFIG.read().unwrap().password.clone();
         if password.is_empty() {
@@ -1065,7 +1079,7 @@ impl Config {
             }
         }
         password
-    }
+    } */
 
     pub fn set_salt(salt: &str) {
         let mut config = CONFIG.write().unwrap();
